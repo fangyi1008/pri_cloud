@@ -1,0 +1,13 @@
+<flow>
+    <sec_group name='accept_icmp'>
+        <port mac='01:02:03:04:05:06'>vnet0</port>
+	    <bridge>vswitch0</bridge>
+		<rule direction='in' protocol='icmp' source_ip='192.168.0.0' source_mask='255.255.255.0' dest_ip='192.168.0.0' dest_mask='255.255.255.0' source_port='80' dest_port='8000' action='accept'/>
+	</sec_group>
+	<sec_group name='drop_icmp'>
+        <port mac='01:02:03:04:05:06'>vnet1</port>
+	    <bridge>vswitch0</bridge>
+		<rule direction='in' protocol='icmp' source_ip='192.168.0.0' source_mask='255.255.255.0' dest_ip='192.168.0.0' dest_mask='255.255.255.0' source_port='80' dest_port='8000' action='drop'/>
+		<rule direction='in' protocol='icmp' source_ip='192.168.0.0' source_mask='255.255.255.0' dest_ip='192.168.0.0' dest_mask='255.255.255.0' source_port='80' dest_port='8000' action='drop'/>
+	</sec_group>
+</flow>

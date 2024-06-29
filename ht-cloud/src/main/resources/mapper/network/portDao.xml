@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hontosec.cloud.network.dao.PortDao">
+<!-- 根据虚拟交换机唯一标识查询端口信息 -->
+<select id="queryBySwitchId" resultType="com.hontosec.cloud.network.entity.PortEntity">
+	select * from port_table where vm_switch_id = #{vmSwitchId}
+</select>
+<!-- 对vlan去重 -->
+<select id="distinctVlan" resultType="java.lang.Integer">
+	select distinct vlan from port_table
+</select>
+<!-- 根据vlan查询 -->
+<select id="queryByVlan" resultType="com.hontosec.cloud.network.entity.PortEntity">
+	select * from port_table where vlan = #{vlan}
+</select>
+</mapper>

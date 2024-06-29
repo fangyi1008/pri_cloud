@@ -1,0 +1,82 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  .logo-box-collapse {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 55px;
+    .logo-text {
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+      color: #dadada;
+      white-space: nowrap;
+    }
+  }
+  .logo-box {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 55px;
+    .logo-text {
+      margin: 0 0 0 10px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #dadada;
+      white-space: nowrap;
+    }
+  }
+  .ant-menu-root {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .ant-menu-inline-collapsed {
+    .ant-menu-submenu,
+    .ant-menu-item {
+      .ant-menu-item-icon {
+        font-size: 20px !important;
+      }
+    }
+  }
+  .ant-menu-submenu,
+  .ant-menu-item {
+    .ant-menu-item-icon {
+      font-size: 20px;
+    }
+  }
+  .task-button {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 24px;
+    color: #fff;
+    padding: 4px 10px 4px 2px;
+    border-top: 1px #010b14 solid;
+  }
+  .ant-menu-submenu-arrow {
+    opacity: 1 !important;
+  }
+
+  /* 去除菜单 Loading 遮罩层 */
+  .ant-spin-nested-loading,
+  .ant-spin-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .ant-spin {
+      max-height: 100% !important;
+    }
+    .ant-spin-container::after {
+      background: transparent !important;
+    }
+    .ant-spin-blur {
+      overflow: auto !important;
+      clear: none !important;
+      opacity: 1 !important;
+    }
+  }
+}

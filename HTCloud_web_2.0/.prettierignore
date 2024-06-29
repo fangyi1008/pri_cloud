@@ -1,0 +1,13 @@
+**/*.min.js
+**/*.min.css
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+
+
+.idea/
+node_modules/
+dist/
+
+

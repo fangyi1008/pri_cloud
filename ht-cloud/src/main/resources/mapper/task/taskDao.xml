@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hontosec.cloud.task.dao.TaskDao">
+<!-- 用于导出任务 -->
+<select id="selectTaskList" resultType="com.hontosec.cloud.task.model.TaskModel">
+	select 
+		task.*,host.host_name as hostName,user.user_name as userName 
+	from 
+		task_table task,host_table host,sys_user user 
+	where 
+		task.host_id = host.host_id 
+	and 
+		task.create_user_id = user.user_id
+		<if test="taskName != null "> and task_name like concat('%', #{taskName}, '%')</if>
+        <if test="createTime != null "> and create_time &gt;= #{createTime}</if>
+        <if test="endTime != null "> and end_time &lt;= #{endTime}</if>
+</select>
+</mapper>

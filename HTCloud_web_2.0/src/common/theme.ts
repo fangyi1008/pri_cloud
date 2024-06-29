@@ -1,0 +1,5 @@
+export const THEME_COLOR = '#196d85'
+export const THEME_COLOR_HOVER = '#4f8696'
+export const THEME_COLOR_ACTIVE = '#5e9caf'
+export const THEME_COLOR_FOCUS = '#a2daea'
+export const THEME_COLOR_FOCUS1 = '#af3838'

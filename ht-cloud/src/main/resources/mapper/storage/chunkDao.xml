@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hontosec.cloud.storage.dao.ChunkDao">
+	<select id="selectIdentifier" resultType="com.hontosec.cloud.storage.entity.Chunk">
+		select * from storage_chunk_table where identifier = #{identifier}
+	</select>
+	<delete id="deleteBackChunkByIdentifier" parameterType="com.hontosec.cloud.storage.entity.Chunk">
+        delete from storage_chunk_table where identifier = #{identifier} and filename = #{filename}
+    </delete>
+</mapper>

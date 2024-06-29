@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pool type="dir">
+    <name>virtimages</name> <!--名称必须惟一-->
+    <capacity>4000000</capacity> <!--StoragePool 的容量-->
+    <allocation>0</allocation> <!--StoragePool 的已用容量-->
+    <target>
+        <path>/home/storagepool/images</path> <!--StoragePool 在宿主机的路径-->
+        <permissions> <!--权限-->
+            <mode>0711</mode>
+            <owner>0</owner>
+            <group>0</group>
+        </permissions>
+    </target>
+</pool>

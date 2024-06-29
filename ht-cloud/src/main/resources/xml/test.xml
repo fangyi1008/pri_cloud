@@ -1,0 +1,204 @@
+<domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
+  <name>test</name><!-- 虚拟机名称 -->
+  <uuid>42f205cc-6eb7-40b8-80c6-f57ac84c8331</uuid><!-- 虚拟机uuid -->
+  <maxMemory slots='10' unit='KiB'>34359738368</maxMemory><!-- 最大可运行内存 -->
+  <memory unit='KiB'>4194304</memory><!-- 启动时的最大内存 -->
+  <currentMemory unit='KiB'>4194304</currentMemory><!-- 当前内存 -->
+  <blkiotune><!-- 虚拟机IO权重 -->
+    <weight>300</weight>
+  </blkiotune>
+  <vcpu placement='static' current='2'>4</vcpu><!-- 虚拟处理器的个数 -->
+  <cputune>
+    <period>1000000</period><!-- vcpu强制间隔的时间周期，单位微秒 -->
+    <quota>-1</quota><!-- vcpu最大允许带宽，单位微秒 -->
+  </cputune>
+  <os>
+    <type arch='x86_64' machine='pc-i440fx-2.12'>hvm</type><!-- arch 系统架构类型,machine机器类型 -->
+    <system>linux</system><!-- 操作系统 -->
+    <!-- 启动引导 -->
+    <boot dev='hd'/><!-- 硬盘 -->
+    <boot dev='cdrom'/><!-- 光驱 -->
+    <boot dev='network'/><!-- 网络 -->
+    <boot dev='fd'/><!-- 软盘 -->
+  </os>
+  <features>
+    <acpi/><!-- 高级配置与电源接口 -->
+    <apic/><!-- 高级可编程中断控制器 -->
+    <pae/><!-- PAE内核,让系统支持PAE物理地址扩展 -->
+  </features>
+  <cpu>
+    <topology sockets='4' cores='1' threads='1'/><!-- socket主板上插cpu的槽的数目,core核数,thread每个core的硬件线程数，即超线程 -->
+    <numa>
+      <cell id='0' cpus='0-3' memory='4194304' unit='KiB'/><!-- 创建了一个nodes，memory是 4194304KB, vcpu0-3绑定在node0 -->
+    </numa>
+  </cpu>
+  <clock offset='utc'/><!-- 时钟设置 -->
+  <!-- 控制周期 -->
+  <!-- 当一个客户端的OS触发lifecycle时，它将采起新动做覆盖默认操做，具体状态参数以下：
+	 	on_poweroff：当客户端请求poweroff时执行特定的动做
+	  	on_reboot：当客户端请求reboot时执行特定的动做
+	   	on_crash：当客户端崩溃时执行的动做
+	   	每种状态下能够容许指定以下四种行为：
+	    destory：domain将会被彻底终止，domain的全部资源会被释放
+	    restart：domain会被终止，而后以相同的配置从新启动
+	    preserver：domain会被终止，它的资源会被保留用来分析
+	    rename-restart：domain会被终止，而后以一个新名字被从新启动 -->
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>restart</on_crash>
+  <pm>
+    <suspend-to-mem enabled='no'/><!-- 内存唤醒 -->
+    <suspend-to-disk enabled='no'/><!-- 磁盘唤醒 -->
+  </pm>
+  <devices>
+    <emulator>/usr/bin/kvm</emulator><!--模拟器所在路径，视本身状况配置-->
+    <!-- 硬盘启动引导 -->
+    <!-- type 指定后端存储介质类型   device指定呈现给虚拟机的存储介质--> 
+    <!-- type block：块设备 
+    	 file：文件设备 
+    	 dir: 目录路径 
+    	 network:网络磁盘 -->
+    <!-- device 
+    	 disk：磁盘（默认） 
+    	 floppy：软盘 
+    	 cdrom：光盘 -->
+    <disk type='file' device='disk'>
+      <!-- driver 指定后端驱动的详细信息 -->
+      <!-- type：磁盘格式的类型，常用的有“raw”和“qcow2”，需要与source的格式一致。
+			io：磁盘IO模式，支持“native”和“threads”选项。
+			cache：磁盘的cache模式，可选项有“none”、“writethrough”、“writeback”、“directsync”等。
+			iothread：指定为磁盘分配的IO线程。
+			error_policy：IO写错误发生时的处理策略，可选项有“stop”、“report”、“ignore”、“enospace”、”retry”等。
+			rerror_policy：IO读错误发生时的处理策略，可选项有“stop”、“report”、“ignore”、“enospac”、“retry”等。
+			retry_interval：IO错误重试间隔，范围为0-MAX_INT，单位为毫秒，仅error_policy=“retry”或rerror_policy=“retry”时可配置。
+			retry_timeout：IO错误重试超时时间，范围为0-MAX_INT，单位为毫秒，仅error_policy=“retry”或rerror_policy=“retry”时可配置。 -->
+      <driver name='qemu' type='qcow2' cache='directsync' io='native'/>
+      <!-- source指定后端存储介质，与disk元素的属性“type”指定类型相对应 -->
+      <!-- file：对应file类型，值为对应文件的完全限定路径。
+      		dev：对应block类型，值为对应主机设备的完全限定路径。
+			dir：对应dir类型，值为用作磁盘目录的完全限定路径。
+			protocol：使用的协议。
+			name: rbd磁盘名称，格式为：$pool/$volume
+			host name：mon地址
+			port：mon地址的端口 -->
+      <source file='/vms/images/test'/>
+      <!-- target指磁盘呈现给虚拟机的总线和设备 -->
+      <!-- dev：指定磁盘的逻辑设备名称，如SCSI、SATA、USB类型总线常用命令习惯为sd[a-p]，IDE类型设备磁盘常用命名习惯为hd[a-d]。
+			bus：指定磁盘设备的类型，常见的有“scsi”、“usb”、“sata”、“virtio”等类型。 -->
+      <target dev='vda' bus='virtio'/>
+      <hotpluggable state='on'/><!-- 开启热插拔 -->
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x08' function='0x0'/><!-- 描述了images所使用的pci地址 -->
+    </disk>
+    <!-- 软盘启动引导 -->
+    <disk type='file' device='floppy'>
+      <driver name='qemu' type='raw' cache='directsync' io='native'/>
+      <target dev='fda' bus='fdc'/>
+      <readonly/><!-- 表示磁盘具有只读属性，磁盘内容不可以被虚拟机修改，通常与光驱结合使用 -->
+      <address type='drive' controller='0' bus='0' target='0' unit='0'/>
+    </disk>
+    <!-- 光驱启动引导 -->
+    <disk type='file' device='cdrom'>
+      <driver name='qemu' type='raw'/>
+      <target dev='hda' bus='ide'/><!-- 盘符 -->
+      <readonly/>
+      <address type='drive' controller='0' bus='0' target='0' unit='0'/>
+    </disk>
+    <!-- USB控制器是为虚拟机上的USB设备提供具体USB功能的虚拟控制器设备 -->
+    <!--model UHCI（Universal Host Controller Interface）：通用主机控制器接口，也称为USB 1.1主机控制器规范。 -->
+    <controller type='usb' index='0' model='piix3-uhci'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x2'/>
+    </controller>
+    <!-- EHCI（Enhanced Host Controller）：增强主机控制器接口，也称为USB 2.0主机控制器规范。 -->
+    <controller type='usb' index='1' model='ehci'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/>
+    </controller>
+    <!-- xHCI（eXtensible Host Controller Interface）：可扩展主机控制器接口，也称为USB 3.0主机控制器规范。 -->
+    <controller type='usb' index='2' model='nec-xhci'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0'/>
+    </controller>
+    <!-- 虚拟磁盘 -->
+    <!-- model可选virtio-blk：普通系统盘和数据盘可用，该种配置下虚拟磁盘在虚拟机内部呈现为vd[a-z]或vd[a-z][a-z]。
+				 virtio-scsi：普通系统盘和数据盘建议选用，该种配置下虚拟磁盘在虚拟机内部呈现为sd[a-z]或sd[a-z][a-z]。
+				 vhost-scsi：对性能要求高的虚拟磁盘建议选用，该种配置下虚拟磁盘在虚拟机内部呈现为sd[a-z]或sd[a-z][a-z] -->
+    <controller type='scsi' index='1' model='virtio-scsi'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/>
+    </controller>
+    <!-- 内存控制器 -->
+    <controller type='pci' index='0' model='pci-root'/>
+    <!-- 磁盘控制器 -->
+    <controller type='fdc' index='0'/>
+    <!-- 集成设备电路 (IDE)设备 -->
+    <controller type='ide' index='0'>
+    <!-- 该设备挂载在PCI总线0的第1个槽位 -->
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x1'/>
+    </controller>
+    <!-- virtio-serial控制器设备 用于虚拟机与主机数据传输-->
+    <controller type='virtio-serial' index='0'>
+    	<!-- 该设备挂载在PCI总线0的第7个槽位 -->
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/>
+    </controller>
+    <!-- 虚拟网络设置，基于网桥 连接到 Open vSwithc bridge vswitch0-->
+    <interface type='bridge'>
+      <mac address='0c:da:41:1d:f2:36'/><!-- mac地址 -->
+      <source bridge='vswitch0'/><!-- 桥接设备 -->
+      <vlan><!-- 缺省VLAN -->
+        <tag id='1'/>
+      </vlan>
+      <virtualport type='openvswitch'><!-- openvswitch只支持网桥，不支持NAT -->
+        <parameters interfaceid='5c63c4f6-569b-45a8-abe8-5a30a4e7572e'/>
+      </virtualport>
+      <model type='virtio'/><!-- 前端驱动 -->
+      <driver name='vhost'/><!-- vhost使虚拟机的网络通信绕过用户空间的虚拟化层，可直接和内核通信，从而提高虚拟机的网络性能 -->
+      <hotpluggable state='on'/>
+      <priority type='low'/><!-- 优先级 -->
+      <mtu size='1500'/><!-- mtu设置 -->
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
+    </interface>
+    <!-- 串口信息 -->
+    <serial type='pty'>
+      <target type='isa-serial' port='0'>
+        <model name='isa-serial'/>
+      </target>
+    </serial>
+    <!-- 控制台设置 -->
+    <console type='pty'>
+      <target type='serial' port='0'/>
+    </console>
+    <!-- 在使用qemu-kvm创建虚拟机时，可以指定创建一个unix套接字，用以进行日常的虚拟机管理。这个套接字在虚拟机内部体现为一个字符设备。 -->
+    <channel type='unix'>
+      <source mode='bind' path='/var/lib/libvirt/qemu/test.agent'/>
+      <target type='virtio' name='org.qemu.guest_agent.0'/>
+      <address type='virtio-serial' controller='0' bus='0' port='1'/>
+    </channel>
+    <!-- 配置可以使用鼠标 -->
+    <input type='tablet' bus='usb'>
+      <address type='usb' bus='0' port='2'/>
+    </input>
+    <input type='mouse' bus='ps2'/>
+    <input type='keyboard' bus='ps2'/>
+    <!-- vnc 图形交互 -->
+        <!-- type : sdl, vnc, spice, rdp, desktop or egl-headless -->
+        <!-- port 为 -1 ⾃动分配端⼝号旧语法 -->
+        <!-- autoport ⾃动分配端⼝号 -->
+        <!-- keymap 使⽤的键盘类型 -->
+    <graphics type='vnc' port='-1' autoport='yes' listen='0.0.0.0'>
+      <listen type='address' address='0.0.0.0'/>
+    </graphics>
+    <video><!-- 视频驱动 -->
+      <model type='cirrus' vram='65536' heads='1' primary='yes'/><!-- 分辨率 -->
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/>
+    </video>
+    <!--  -->
+    <hub type='usb'>
+      <address type='usb' bus='0' port='1'/>
+    </hub>
+    <!-- KVM的内存气球技术使得可以在虚拟机中按照需要调整的内存大小，提升内存的利用率。使用的时候，默认情况是需要安装virt balloon的驱动，内核开启CONFIG_VIRTIO_BALLOON。CentOS7默认已经开启了此选项，并且也安装了virtballoon驱动。 -->
+    <memballoon model='virtio'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x09' function='0x0'/>
+    </memballoon>
+  </devices>
+  <qemu:commandline>
+    <qemu:arg value='-cpu'/>
+    <qemu:arg value='EPYC,vendor=AuthenticAMD,model_id=Hygon Processor series'/>
+  </qemu:commandline>
+</domain>

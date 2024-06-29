@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hontosec.cloud.vm.dao.VmDao">
+	<select id="queryByHostId" resultType="com.hontosec.cloud.vm.entity.VmEntity">
+		select * from vm_table where host_id = #{hostId}
+	</select>
+
+
+	<select id="selectVmName" resultType="string">
+		select vm_name from vm_table where vm_id = #{vmId}
+	</select>
+
+	<update id="updateState">
+		update vm_table set state = #{state} where vm_name = #{vmName}
+	</update>
+
+	<update id="updateVmName">
+		update vm_table set vm_name = #{vmName} where vm_id = #{vmId}
+	</update>
+
+	<!-- 根据存储卷id查询虚拟机 -->
+	<select id="queryByVolumeId" resultType="com.hontosec.cloud.vm.entity.VmEntity">
+		select * from vm_table where storage_volume_id = #{storageVolumeId}
+	</select>
+
+	<!-- 根据虚拟机名称查询虚拟机id -->
+	<select id="selectVmId" resultType="Integer">
+		select vm_id from vm_table where vm_name=#{vmName}
+	</select>
+
+	<!-- 根据虚拟机vmId查询虚拟机是否存在 -->
+	<select id="queryByVmName" resultType="com.hontosec.cloud.vm.entity.VmEntity">
+		select * from vm_table where vm_name=#{vmName}
+	</select>
+	<!-- 根据集群id查询虚拟机 -->
+	<select id="queryByClusterId" resultType="com.hontosec.cloud.vm.entity.VmEntity">
+		select * from vm_table where cluster_id=#{clusterId}
+	</select>
+
+	<!-- 查询全部虚拟机 -->
+	<select id="selectVmList" resultType="com.hontosec.cloud.vm.entity.DTO.VmEntityDTO">
+		select * from vm_table vt left join vm_hardware_table vht on  vt.vm_id = vht.vm_id
+	</select>
+	<select id="queryList" resultType="com.hontosec.cloud.vm.entity.VmEntity">
+		SELECT
+			vt.*, dc.data_center_name AS dataCenterName,
+			ct.cluster_name as clusterName,
+			ht.host_name as hostName,
+			su.username as createUserName
+		FROM
+		vm_table vt left join host_table ht on vt.host_id = ht.host_id
+		left join cluster_table ct on vt.cluster_id = ct.cluster_id
+		left join data_center_table dc on vt.data_center_id = dc.data_center_id
+		left join sys_user su on vt.create_user_id = su.user_id
+		<where>
+			<if test="dataCenterId != null and dataCenterId != 0">
+				AND vt.data_center_id = #{dataCenterId}
+			</if>
+			<if test="clusterId != null and clusterId != 0">
+				AND vt.cluster_id = #{clusterId}
+			</if>
+			<if test="hostId != null and hostId != 0">
+				AND vt.host_id = #{hostId}
+			</if>
+			<if test="vmName != null and vmName != ''">
+				AND vt.vm_name like concat('%', #{vmName}, '%')
+			</if>
+		</where>
+		order by vt.create_time desc
+		LIMIT #{page},#{limit}
+	</select>
+
+</mapper>

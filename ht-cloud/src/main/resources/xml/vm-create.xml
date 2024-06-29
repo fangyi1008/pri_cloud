@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain type='kvm'>
+    <name>kvmdemo</name> <!--名称必须惟一-->
+    <uuid>c6e408f3-7750-47ca-8bd1-d19837271472</uuid> <!--uuid必须惟一，可以使用 java.util.UUID 随机生成-->
+    <memory unit='MiB'>512</memory> <!--最大可用内存配置-->
+    <currentMemory unit='MiB'>512</currentMemory><!-- 现有内存 -->
+    <vcpu placement='static'>1</vcpu> <!--配置cpu-->
+    <os>
+        <type arch='x86_64' machine='pc'>hvm</type><!-- hvm表示全虚拟化 -->
+        <boot dev='hd'/> <!--硬盘启动-->
+        <boot dev='cdrom'/> <!--光驱启动-->
+    </os>
+    <features>
+        <acpi/><!-- 高级配置与电源接口 -->
+        <apic/><!-- 高级可编程中断控制器 -->
+        <pae/><!-- PAE内核,让系统支持PAE物理地址扩展 -->
+    </features>
+    <clock offset='localtime'/><!-- 时间 -->
+    <on_poweroff>destroy</on_poweroff>
+    <on_reboot>restart</on_reboot>
+    <on_crash>restart</on_crash>
+    <devices>
+        <emulator>/opt/qemu-7.0.0/bin/qemu-kvm</emulator> <!--模拟器所在路径，视本身状况配置-->
+        <disk type='file' device='disk'>
+            <driver name='qemu' type='qcow2'/>
+            <source file='/var/lib/libvirt/images/vm1.qcow2'/> <!--虚拟硬盘配置，这个地方填生成的镜像文件所在的路径便可-->
+            <target dev='hda' bus='ide'/><!-- 磁盘名 -->
+        </disk>
+        <!--<disk type='file' device='cdrom'> <source file='/var/lib/libvirt/images/ubuntu-16.04-desktop-amd64.iso'/> <target dev='hdb' bus='ide'/> <readonly/> </disk>-->
+        <interface type='bridge'> <!--网络配置，本示例配置成桥接模式 -->
+            <mac address='52:54:00:f4:06:03'/> <!--mac 地址必须惟一-->
+            <source bridge='virbr0'/><!-- 网卡名 -->
+        </interface>
+        <!-- NAT方式 -->
+        <!-- <interface type="network">
+        	<source network='default'/>
+        </interface> -->
+        <console type='pty'> <!--控制台配置，若是须要使用 virsh 命令登录虚拟机，则必须添加-->
+        	<source path='/dev/pts/5'/>
+            <target type='virtio' port='0'/>
+        </console>
+        <input type='tablet' bus='usb'/>
+        <input type='mouse' bus='ps2'/>
+        <input type='keyboard' bus='ps2'/>
+        <graphics type='vnc' autoport='yes' keymap='en-us' listen='0.0.0.0'/> <!--VNC配置，autoport="yes"表示自动分配VNC端口，推荐使用，listen="0.0.0.0"表示监听全部IP-->
+        <memballoon model="virtio"> <!--内存监控配置，添加此配置，才能正常取得内存使用状况-->
+            <stats period="10"/><!--每10s钟收集一次-->
+        </memballoon>
+    </devices>
+</domain>

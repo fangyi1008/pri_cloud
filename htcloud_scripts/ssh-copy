@@ -1,0 +1,11 @@
+#!/usr/bin/expect
+set ip [lindex $argv 0]
+set passwd [lindex $argv 1]
+
+spawn ssh-copy-id $ip
+#spawn ssh $ip ls -l /root
+expect "continue connecting *"
+send "yes\r"
+expect "*password:"
+send "$passwd\r"
+expect "egnore"

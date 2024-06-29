@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hontosec.cloud.storage.dao.StoragePoolDao">
+<select id="queryByHostId" resultType="com.hontosec.cloud.storage.entity.StoragePoolEntity">
+	select * from storage_pool_table where host_id = #{hostId}
+</select>
+
+<select id="queryByHostIdAndName" resultType="com.hontosec.cloud.storage.entity.StoragePoolEntity">
+	select * from storage_pool_table where host_id = #{hostId} and storage_pool_name = #{storagePoolName}
+</select>
+<select id="queryByShowName" resultType="com.hontosec.cloud.storage.entity.StoragePoolEntity">
+	select * from storage_pool_table where pool_show_name = #{poolShowName}
+</select>
+<!-- 根据存储类型查询 -->
+<select id="queryByType" resultType="com.hontosec.cloud.storage.entity.StoragePoolEntity">
+	select
+	 	* 
+	 from 
+	 	storage_pool_table 
+	 	<where>
+		<if test="hostId != null and hostId != ''">
+			AND host_id = #{hostId}
+		</if>
+		<if test="poolType != null and poolType != ''">
+			AND pool_type = #{poolType}
+		</if>
+		AND status = 1
+	 </where>
+</select>
+<!-- 根据存储池路径查询 -->
+<select id="queryByPath" resultType="com.hontosec.cloud.storage.entity.StoragePoolEntity">
+	select * from storage_pool_table where storage_pool_path = #{storagePoolPath} and host_id = #{hostId}
+</select>
+<select id="queryPoolPage" resultType="com.hontosec.cloud.storage.vo.StoragePoolVo">
+	select 
+		storagePool.storage_pool_id,
+		storagePool.pool_uuid,
+		storagePool.pool_show_name,
+		storagePool.storage_pool_name,
+		storagePool.storage_pool_path,
+		storagePool.storage_ip,
+		storagePool.pool_type,
+		storagePool.capacity,
+		storagePool.used_space,
+		storagePool.free_space,
+		storagePool.create_time,
+		storagePool.cluster_id,
+		storagePool.host_id,
+		storagePool.create_user_id,
+		storagePool.status,
+		storagePool.vm_template_type,
+		storagePool.judge,
+		host.os_ip,
+		su.username as createUserName,
+		host.host_name,
+		ct.cluster_name
+	from 
+		storage_pool_table storagePool left join host_table host on storagePool.host_id = host.host_id
+		left join cluster_table ct on storagePool.cluster_id = ct.cluster_id
+		left join sys_user su on storagePool.create_user_id = su.user_id
+	<where>
+		<if test="hostId != null and hostId != ''">
+			AND storagePool.host_id = #{hostId}
+		</if>
+		<if test="storagePoolName != null and storagePoolName != ''">
+			AND storagePool.storage_pool_name like concat('%', #{storagePoolName}, '%')
+		</if>
+		<if test="createUserId != null and createUserId != ''">
+			AND storagePool.create_user_id = #{createUserId} 
+		</if>
+		<if test="status != null and status != ''">
+			AND storagePool.status = #{status} 
+		</if>
+	</where>
+	order by storagePool.create_time desc
+	LIMIT #{page},#{limit}
+</select>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<volume type='file'>
+    <name>kvmdemo.qcow2</name> <!--名称必须惟一-->
+    <capacity>100000</capacity> <!--StorageVol 的容量   unit='GiB'-->
+    <allocation>0</allocation> <!--StorageVol 的已用容量-->
+    <target>
+        <path>/var/lib/libvirt/images/kvmdemo.qcow2</path> <!--StorageVol 在宿主机的路径-->
+        <format type='qcow2'/> <!--文件类型，一般都是 qcow2，也能够是 raw-->
+        <permissions> <!--权限-->
+            <mode>0600</mode>
+            <owner>0</owner>
+            <group>0</group>
+        </permissions>
+    </target>
+</volume>
