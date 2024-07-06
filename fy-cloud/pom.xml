@@ -210,7 +210,7 @@
         </dependency>-->
 	</dependencies>
 	<build>
-		<finalName>ht-cloud</finalName>
+		<finalName>fy-cloud</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
