@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hontosec.cloud.storage.dao.StoragePoolDao">
-<select id="queryByHostId" resultType="com.hontosec.cloud.storage.entity.StoragePoolEntity">
+<mapper namespace="com.yitech.cloud.storage.dao.StoragePoolDao">
+<select id="queryByHostId" resultType="com.yitech.cloud.storage.entity.StoragePoolEntity">
 	select * from storage_pool_table where host_id = #{hostId}
 </select>
 
-<select id="queryByHostIdAndName" resultType="com.hontosec.cloud.storage.entity.StoragePoolEntity">
+<select id="queryByHostIdAndName" resultType="com.yitech.cloud.storage.entity.StoragePoolEntity">
 	select * from storage_pool_table where host_id = #{hostId} and storage_pool_name = #{storagePoolName}
 </select>
-<select id="queryByShowName" resultType="com.hontosec.cloud.storage.entity.StoragePoolEntity">
+<select id="queryByShowName" resultType="com.yitech.cloud.storage.entity.StoragePoolEntity">
 	select * from storage_pool_table where pool_show_name = #{poolShowName}
 </select>
 <!-- 根据存储类型查询 -->
-<select id="queryByType" resultType="com.hontosec.cloud.storage.entity.StoragePoolEntity">
+<select id="queryByType" resultType="com.yitech.cloud.storage.entity.StoragePoolEntity">
 	select
 	 	* 
 	 from 
@@ -28,10 +28,10 @@
 	 </where>
 </select>
 <!-- 根据存储池路径查询 -->
-<select id="queryByPath" resultType="com.hontosec.cloud.storage.entity.StoragePoolEntity">
+<select id="queryByPath" resultType="com.yitech.cloud.storage.entity.StoragePoolEntity">
 	select * from storage_pool_table where storage_pool_path = #{storagePoolPath} and host_id = #{hostId}
 </select>
-<select id="queryPoolPage" resultType="com.hontosec.cloud.storage.vo.StoragePoolVo">
+<select id="queryPoolPage" resultType="com.yitech.cloud.storage.vo.StoragePoolVo">
 	select 
 		storagePool.storage_pool_id,
 		storagePool.pool_uuid,

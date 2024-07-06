@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hontosec.cloud.sys.dao.SysUserRoleDao">
+<mapper namespace="com.yitech.cloud.sys.dao.SysUserRoleDao">
 
 	<select id="queryRoleIdList" resultType="long">
 		select role_id from sys_user_role where user_id = #{value}

@@ -6,8 +6,8 @@
     <relativePath/>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.hontosec.cloud</groupId>
-  <artifactId>ht-cloud</artifactId>
+  <groupId>com.yitech.cloud</groupId>
+  <artifactId>fy-cloud</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <properties>
   		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

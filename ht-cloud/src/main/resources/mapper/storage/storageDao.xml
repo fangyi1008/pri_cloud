@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hontosec.cloud.storage.dao.StorageDao">
-<select id="queryByPoolId" resultType="com.hontosec.cloud.storage.entity.StorageEntity">
+<mapper namespace="com.yitech.cloud.storage.dao.StorageDao">
+<select id="queryByPoolId" resultType="com.yitech.cloud.storage.entity.StorageEntity">
 	select * from storage_table where storage_pool_id = #{storagePoolId}
 </select>
-<select id="queryByPoolIdAndName" resultType="com.hontosec.cloud.storage.entity.StorageEntity">
+<select id="queryByPoolIdAndName" resultType="com.yitech.cloud.storage.entity.StorageEntity">
 	select * from storage_table where storage_pool_id = #{storagePoolId} and storage_volume_name = #{storageVolumeName}
 </select>
-	<select id="queryByStorageId" resultType="com.hontosec.cloud.storage.entity.StorageEntity">
+	<select id="queryByStorageId" resultType="com.yitech.cloud.storage.entity.StorageEntity">
 		select * from storage_table where storage_id = #{storageId}
 	</select>
-	<select id="selectStorageName" resultType="com.hontosec.cloud.storage.entity.StorageEntity">
+	<select id="selectStorageName" resultType="com.yitech.cloud.storage.entity.StorageEntity">
 		select * from storage_table where storage_volume_name = #{storageVolumeName}
 	</select>
-	<select id="selectByBasicId" resultType="com.hontosec.cloud.storage.entity.StorageEntity">
+	<select id="selectByBasicId" resultType="com.yitech.cloud.storage.entity.StorageEntity">
 		select * from storage_table where basic_volume_id = #{basicVolumeId}
 	</select>
-	<select id="selectIdentifier" resultType="com.hontosec.cloud.storage.entity.StorageEntity">
+	<select id="selectIdentifier" resultType="com.yitech.cloud.storage.entity.StorageEntity">
 		select * from storage_table where identifier = #{identifier}
 	</select>
-	<select id="selectIdentifierPoolId" resultType="com.hontosec.cloud.storage.entity.StorageEntity">
+	<select id="selectIdentifierPoolId" resultType="com.yitech.cloud.storage.entity.StorageEntity">
 		select * from storage_table where identifier = #{identifier} and storage_pool_id = #{storagePoolId}
 	</select>
-	<select id="queryList" resultType="com.hontosec.cloud.storage.entity.StorageEntity">
+	<select id="queryList" resultType="com.yitech.cloud.storage.entity.StorageEntity">
 		SELECT
 			st.*, su.username as createUserName,
 			sp.storage_pool_name,

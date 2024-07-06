@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hontosec.cloud.sys.dao.SysUserTokenDao">
+<mapper namespace="com.yitech.cloud.sys.dao.SysUserTokenDao">
 
-	<select id="queryByToken" resultType="com.hontosec.cloud.sys.entity.SysUserTokenEntity">
+	<select id="queryByToken" resultType="com.yitech.cloud.sys.entity.SysUserTokenEntity">
 		select * from sys_user_token where token = #{value}
 	</select>
 </mapper>

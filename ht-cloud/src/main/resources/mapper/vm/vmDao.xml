@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hontosec.cloud.vm.dao.VmDao">
-	<select id="queryByHostId" resultType="com.hontosec.cloud.vm.entity.VmEntity">
+<mapper namespace="com.yitech.cloud.vm.dao.VmDao">
+	<select id="queryByHostId" resultType="com.yitech.cloud.vm.entity.VmEntity">
 		select * from vm_table where host_id = #{hostId}
 	</select>
 
@@ -19,7 +19,7 @@
 	</update>
 
 	<!-- 根据存储卷id查询虚拟机 -->
-	<select id="queryByVolumeId" resultType="com.hontosec.cloud.vm.entity.VmEntity">
+	<select id="queryByVolumeId" resultType="com.yitech.cloud.vm.entity.VmEntity">
 		select * from vm_table where storage_volume_id = #{storageVolumeId}
 	</select>
 
@@ -29,19 +29,19 @@
 	</select>
 
 	<!-- 根据虚拟机vmId查询虚拟机是否存在 -->
-	<select id="queryByVmName" resultType="com.hontosec.cloud.vm.entity.VmEntity">
+	<select id="queryByVmName" resultType="com.yitech.cloud.vm.entity.VmEntity">
 		select * from vm_table where vm_name=#{vmName}
 	</select>
 	<!-- 根据集群id查询虚拟机 -->
-	<select id="queryByClusterId" resultType="com.hontosec.cloud.vm.entity.VmEntity">
+	<select id="queryByClusterId" resultType="com.yitech.cloud.vm.entity.VmEntity">
 		select * from vm_table where cluster_id=#{clusterId}
 	</select>
 
 	<!-- 查询全部虚拟机 -->
-	<select id="selectVmList" resultType="com.hontosec.cloud.vm.entity.DTO.VmEntityDTO">
+	<select id="selectVmList" resultType="com.yitech.cloud.vm.entity.DTO.VmEntityDTO">
 		select * from vm_table vt left join vm_hardware_table vht on  vt.vm_id = vht.vm_id
 	</select>
-	<select id="queryList" resultType="com.hontosec.cloud.vm.entity.VmEntity">
+	<select id="queryList" resultType="com.yitech.cloud.vm.entity.VmEntity">
 		SELECT
 			vt.*, dc.data_center_name AS dataCenterName,
 			ct.cluster_name as clusterName,

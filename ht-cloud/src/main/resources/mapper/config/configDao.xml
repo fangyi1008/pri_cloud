@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hontosec.cloud.config.dao.ConfigDao">
+<mapper namespace="com.yitech.cloud.config.dao.ConfigDao">
 <select id="queryByCode" resultType="java.lang.String">
 	select config_value from config_table where config_code = #{configCode}
 </select>

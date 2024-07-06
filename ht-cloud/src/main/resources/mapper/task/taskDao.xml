@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hontosec.cloud.task.dao.TaskDao">
+<mapper namespace="com.yitech.cloud.task.dao.TaskDao">
 <!-- 用于导出任务 -->
-<select id="selectTaskList" resultType="com.hontosec.cloud.task.model.TaskModel">
+<select id="selectTaskList" resultType="com.yitech.cloud.task.model.TaskModel">
 	select 
 		task.*,host.host_name as hostName,user.user_name as userName 
 	from 

@@ -1,1 +1,1 @@
-#org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.hontosec.cloud.listener.config.LicenseVerifyAutoConfigure
+#org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.yitech.cloud.listener.config.LicenseVerifyAutoConfigure
