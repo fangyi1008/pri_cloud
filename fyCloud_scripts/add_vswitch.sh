@@ -4,7 +4,7 @@ if [  "X$1" != "X" ];then
 fi
 bridge=$(ovs-vsctl list-br  | grep $name)
 if [ "$bridge" = "$name" ];then
-    echo "$curtime $0:bridge $name is exist" >> /var/log/htcloud.log
+    echo "$curtime $0:bridge $name is exist" >> /var/log/fycloud.log
     exit 1
 else
     ovs-vsctl add-br $name

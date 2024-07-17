@@ -404,7 +404,7 @@ public class HostServiceImpl extends ServiceImpl<HostDao, HostEntity> implements
 			}
 			File file = new File("/root/.ssh/id_rsa.pub");
 			if(!file.exists()) {
-				process = Runtime.getRuntime().exec("sh /htcloud/scripts/ssh-keygen.sh");
+				process = Runtime.getRuntime().exec("sh /fyCloud/scripts/ssh-keygen.sh");
 				if(process.waitFor() == 0) {
 					transferPubKey(host);
 				}
@@ -465,7 +465,7 @@ public class HostServiceImpl extends ServiceImpl<HostDao, HostEntity> implements
 						storagePoolEntity.setPoolShowName(storagePool.getName());
 						storagePoolEntity.setStoragePoolName(storagePool.getName());
 						storagePoolEntity.setPoolUuid(storagePool.getUUIDString());
-						storagePoolEntity.setStoragePoolPath("/htcloud/storagePool/" + storagePool.getName());
+						storagePoolEntity.setStoragePoolPath("/fyCloud/storagePool/" + storagePool.getName());
 						storagePoolEntity.setCapacity(DOUBLE_FORMAT.format(storagePoolInfo.capacity / 1024.00 / 1024.00 / 1024.00) + "GB");
 						storagePoolEntity.setUsedSpace(DOUBLE_FORMAT.format(storagePoolInfo.allocation / 1024.00 / 1024.00 / 1024.00) + "GB");
 						storagePoolEntity.setFreeSpace(DOUBLE_FORMAT.format(storagePoolInfo.available / 1024.00 / 1024.00 / 1024.00) + "GB");

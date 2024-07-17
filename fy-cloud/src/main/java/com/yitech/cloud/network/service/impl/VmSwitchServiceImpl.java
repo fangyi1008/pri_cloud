@@ -91,7 +91,7 @@ public class VmSwitchServiceImpl extends ServiceImpl<VmSwitchDao, VmSwitchEntity
 			}
 
 			vmSwitchDao.insert(vmSwitch);
-			String command = String.format("/htcloud/scripts/add_vswitch.sh %s %s %s %s", vmSwitch.getVmSwitchName(),
+			String command = String.format("/fyCloud/scripts/add_vswitch.sh %s %s %s %s", vmSwitch.getVmSwitchName(),
 					vmSwitch.getIp(), vmSwitch.getNetMask(), vmSwitch.getGateway());
 			int flag = SshUtil.sshShell(hostEntity.getOsIp(), 22, hostEntity.getHostUser(),
 					CryptUtil.decrypt(hostEntity.getHostPassword()), command);
@@ -162,7 +162,7 @@ public class VmSwitchServiceImpl extends ServiceImpl<VmSwitchDao, VmSwitchEntity
 					portEntity.setPortType(2); // 上行端口
 					portEntity.setType("bridge");
 
-					String netCommand = "python3 /htcloud/scripts/get_phy_nic.py " + netMachine;
+					String netCommand = "python3 /fyCloud/scripts/get_phy_nic.py " + netMachine;
 					String result = SshUtil.sshExecute(hostEntity.getOsIp(), 22, hostEntity.getHostUser(),
 							CryptUtil.decrypt(hostEntity.getHostPassword()), netCommand);
 					JSONObject resultJson = JSONObject.parseObject(result);
@@ -250,7 +250,7 @@ public class VmSwitchServiceImpl extends ServiceImpl<VmSwitchDao, VmSwitchEntity
 		try {
 			result = SshUtil.sshExecute(host.getOsIp(), 22, host.getHostUser(),
 					CryptUtil.decrypt(host.getHostPassword()),
-					"python3 /htcloud/scripts/get_port_st.py " + vmSwitch.getVmSwitchName());
+					"python3 /fyCloud/scripts/get_port_st.py " + vmSwitch.getVmSwitchName());
 		} catch (Exception e) {
 			logger.error("获取虚拟端口流量失败: " + e.getMessage());
 			return logAndReturnError(sysLog, "获取虚拟端口流量失败: " + e.getMessage());
@@ -270,7 +270,7 @@ public class VmSwitchServiceImpl extends ServiceImpl<VmSwitchDao, VmSwitchEntity
 
 		try {
 			String result = SshUtil.sshExecute(host.getOsIp(), 22, host.getHostUser(),
-					CryptUtil.decrypt(host.getHostPassword()), "python3 /htcloud/scripts/get_phy_nic.py");
+					CryptUtil.decrypt(host.getHostPassword()), "python3 /fyCloud/scripts/get_phy_nic.py");
 			List<VmSwitchEntity> vmSwitchList = vmSwitchDao.queryByHostId(host.getHostId());
 			JSONArray json = JSONArray.parseArray(result);
 

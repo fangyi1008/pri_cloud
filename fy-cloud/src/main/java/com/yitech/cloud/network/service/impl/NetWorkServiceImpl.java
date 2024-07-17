@@ -45,7 +45,7 @@ public class NetWorkServiceImpl extends ServiceImpl<NetWorkDao, NetWorkEntity> i
 		sysLog.setOperObj(host.getHostName());
 		try {
 			//调用python脚本返回物理网卡名称、物理网卡型号、设备地址、mac地址、mtu、双工速率及状态、numa
-			result = SshUtil.sshExecute(host.getOsIp(), 22, host.getHostUser(), CryptUtil.decrypt(host.getHostPassword()), "python3 /htcloud/scripts/get_phy_nic.py");
+			result = SshUtil.sshExecute(host.getOsIp(), 22, host.getHostUser(), CryptUtil.decrypt(host.getHostPassword()), "python3 /fyCloud/scripts/get_phy_nic.py");
 		} catch (Exception e) {
 			logger.error("获取物理网卡失败 : " + e.getMessage());
 			sysLog.setResult("失败");

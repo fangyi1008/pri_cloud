@@ -164,13 +164,13 @@ public class StoragePoolPublicServiceImpl extends ServiceImpl<StoragePoolDao, St
 	 */
 	public void delIscsiPool(StoragePoolEntity storagePool) {
 		try {
-			String mntPath = "/htcloud" + File.separator + storagePool.getStoragePoolName();//文件夹路径
+			String mntPath = "/fyCloud" + File.separator + storagePool.getStoragePoolName();//文件夹路径
 			HostEntity hostEntity = hostDao.selectById(storagePool.getHostId());
 			String mountCommand = "umount " + storagePool.getStoragePoolPath() + " " + mntPath;
 			SshUtil.sshShell(hostEntity.getOsIp(), 22, hostEntity.getHostUser(), CryptUtil.decrypt(hostEntity.getHostPassword()), mountCommand);//执行挂载
-			String discoveryCommand = "/htcloud/scripts/iscsi_pool.sh discovery "+storagePool.getStorageIp()+":3260";
+			String discoveryCommand = "/fyCloud/scripts/iscsi_pool.sh discovery "+storagePool.getStorageIp()+":3260";
 			String discoveryResult = SshUtil.sshExecute(hostEntity.getOsIp(), 22, hostEntity.getHostUser(), CryptUtil.decrypt(hostEntity.getHostPassword()), discoveryCommand);
-			String loginCommand = "/htcloud/scripts/iscsi_pool.sh logout " + discoveryResult + " " + storagePool.getStorageIp();//执行login
+			String loginCommand = "/fyCloud/scripts/iscsi_pool.sh logout " + discoveryResult + " " + storagePool.getStorageIp();//执行login
 			SshUtil.sshShell(hostEntity.getOsIp(), 22, hostEntity.getHostUser(), CryptUtil.decrypt(hostEntity.getHostPassword()), loginCommand);
 			storagePoolDao.deleteById(storagePool.getStoragePoolId());
 		} catch (Exception e) {
@@ -244,9 +244,9 @@ public class StoragePoolPublicServiceImpl extends ServiceImpl<StoragePoolDao, St
 		String result = null;//iscsi磁盘列表
 		try {
 			HostEntity hostEntity = hostDao.selectById(hostId);
-			String discoveryCommand = "/htcloud/scripts/iscsi_pool.sh discovery "+ip+":3260";
+			String discoveryCommand = "/fyCloud/scripts/iscsi_pool.sh discovery "+ip+":3260";
 			discoveryResult = SshUtil.sshExecute(hostEntity.getOsIp(), 22, hostEntity.getHostUser(), CryptUtil.decrypt(hostEntity.getHostPassword()), discoveryCommand);
-			String loginCommand = "/htcloud/scripts/iscsi_pool.sh login " + discoveryResult + " " + ip;//执行login
+			String loginCommand = "/fyCloud/scripts/iscsi_pool.sh login " + discoveryResult + " " + ip;//执行login
 			SshUtil.sshShell(hostEntity.getOsIp(), 22, hostEntity.getHostUser(), CryptUtil.decrypt(hostEntity.getHostPassword()), loginCommand);
 			String command = "ls /dev/disk/by-path | grep " + discoveryResult;//获取iscsi磁盘
 			//ip-10.0.10.1:3260-iscsi-iqn.1995-06.com.suma:alias.tgt0000.ef38635501000020-lun-0
@@ -259,7 +259,7 @@ public class StoragePoolPublicServiceImpl extends ServiceImpl<StoragePoolDao, St
 			for(int i = 0;i<iqnFormats.length;i++) {
 				sb.append("/dev/disk/by-path/" + iqnFormats[i] + ",");
 			}
-			String mkfsCommand = "/htcloud/scripts/format.sh " + sb.deleteCharAt(sb.length() - 1);
+			String mkfsCommand = "/fyCloud/scripts/format.sh " + sb.deleteCharAt(sb.length() - 1);
 			result = SshUtil.sshExecute(hostEntity.getOsIp(), 22, hostEntity.getHostUser(), CryptUtil.decrypt(hostEntity.getHostPassword()), mkfsCommand);
 			result = result.substring(1, result.length());
 		} catch (Exception e) {
@@ -303,7 +303,7 @@ public class StoragePoolPublicServiceImpl extends ServiceImpl<StoragePoolDao, St
 	public Result unFormatDev(Long hostId) {
 		try {
 			HostEntity hostEntity = hostDao.selectById(hostId);
-			String unFormatCommand = "/htcloud/scripts/list_empty_disk.sh";
+			String unFormatCommand = "/fyCloud/scripts/list_empty_disk.sh";
 			String unFormatResult = SshUtil.sshExecute(hostEntity.getOsIp(), 22, hostEntity.getHostUser(), CryptUtil.decrypt(hostEntity.getHostPassword()), unFormatCommand);
 			String[] unFormatList = unFormatResult.split("\\s+");
 			return Result.ok().put("unFormatList", unFormatList);

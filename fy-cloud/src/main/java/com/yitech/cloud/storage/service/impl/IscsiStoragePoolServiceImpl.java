@@ -99,7 +99,7 @@ public class IscsiStoragePoolServiceImpl extends ServiceImpl<StoragePoolDao, Sto
 		sysLog.setOperMark("启动ISCSI存储池");
 		try {
 			HostEntity hostEntity = hostDao.selectById(storagePool.getHostId());
-			String mntPath = "/htcloud" + File.separator + storagePool.getStoragePoolName();//文件夹路径
+			String mntPath = "/fyCloud" + File.separator + storagePool.getStoragePoolName();//文件夹路径
 			SshUtil.sshShell(hostEntity.getOsIp(), 22, hostEntity.getHostUser(), CryptUtil.decrypt(hostEntity.getHostPassword()), "mkdir -p " + mntPath);
 			String mountCommand = "mount " + storagePool.getStoragePoolPath() + " " + mntPath;
 			Integer mountResult = SshUtil.sshShell(hostEntity.getOsIp(), 22, hostEntity.getHostUser(), CryptUtil.decrypt(hostEntity.getHostPassword()), mountCommand);//执行挂载
@@ -138,7 +138,7 @@ public class IscsiStoragePoolServiceImpl extends ServiceImpl<StoragePoolDao, Sto
 		sysLog.setOperMark("暂停ISCSI存储池");
 		try {
 			HostEntity hostEntity = hostDao.selectById(storagePool.getHostId());
-			String mntPath = "/htcloud" + File.separator + storagePool.getStoragePoolName();//文件夹路径
+			String mntPath = "/fyCloud" + File.separator + storagePool.getStoragePoolName();//文件夹路径
 			String umountCommand = "umount -v " + mntPath;
 			Integer umountResult = SshUtil.sshShell(hostEntity.getOsIp(), 22, hostEntity.getHostUser(), CryptUtil.decrypt(hostEntity.getHostPassword()), umountCommand);//执行卸载
 			if(umountResult != 0) {

@@ -53,7 +53,7 @@ public class HostMonitorJob implements ApplicationRunner{
 				hostMonitorEntity.setHostName(hostList.get(i).getHostName());//主机名称
 				hostMonitorEntity.setState(hostList.get(i).getState());//主机状态
 				//调用shell脚本获取主机信息
-				String command = "/htcloud/scripts/get_host_info.sh";
+				String command = "/fyCloud/scripts/get_host_info.sh";
 				if(IPUtils.ping(hostList.get(i).getOsIp()) == true) {
 					String result = SshUtil.sshExecute(hostList.get(i).getOsIp(), 22, hostList.get(i).getHostUser(), CryptUtil.decrypt(hostList.get(i).getHostPassword()), command);
 					JSONObject jsonResult = JSONObject.parseObject(result);

@@ -176,7 +176,7 @@ public class SecurityRuleController extends AbstractController{
 											secGroupXmlList.add(secGroupXml);
 											flowXml.setSecGroupXmlList(secGroupXmlList);
 											// 调用python脚本下发流量控制信息
-											String xmlFilePath = "/htcloud/scripts/" + vmEntity.getVmId() + "_openflow.xml";
+											String xmlFilePath = "/fyCloud/scripts/" + vmEntity.getVmId() + "_openflow.xml";
 											File xmlFile = new File(xmlFilePath);
 											if (!xmlFile.exists()) {
 												xmlFile.createNewFile();
@@ -184,9 +184,9 @@ public class SecurityRuleController extends AbstractController{
 											JAXB.marshal(flowXml, xmlFile);// 拷贝文件到目标服务器
 											if(!hostEntity.getOsIp().equals(IPUtils.getIp())) {
 												SFTPUtil sftpUtil = new SFTPUtil(hostEntity.getHostUser(),CryptUtil.decrypt(hostEntity.getHostPassword()),hostEntity.getOsIp(),22);
-												sftpUtil.upFile("/htcloud/scripts/", vmEntity.getVmId() + "_openflow.xml", xmlFilePath, true);
+												sftpUtil.upFile("/fyCloud/scripts/", vmEntity.getVmId() + "_openflow.xml", xmlFilePath, true);
 											}
-											String switchCommand = "python3 /htcloud/scripts/openflow.py deploy " + xmlFilePath;
+											String switchCommand = "python3 /fyCloud/scripts/openflow.py deploy " + xmlFilePath;
 											String flowResult = SshUtil.sshExecute(hostEntity.getOsIp(), 22, hostEntity.getHostUser(),
 													CryptUtil.decrypt(hostEntity.getHostPassword()), switchCommand);
 											System.out.println(flowResult);
